@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
+
 
 // 사용자의 인증 관리하기 위한 방법
 public class JWTFilter extends OncePerRequestFilter {
@@ -40,7 +42,7 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        System.out.println("authorization now");
+        System.out.println("authorization now"+new Date(System.currentTimeMillis()));
 
         // Bearer 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
@@ -75,4 +77,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+
 }

@@ -29,17 +29,18 @@ public class JwtUtil {
     // 토큰 만료 여부 확인
     // 토큰의 만료 시간이 현재 시간보다 이전인지 확인하여 만료 여부 결정
     public Boolean isExpired(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date(System.currentTimeMillis()));
+
     }
 
     // 받은 정보로 토큰 생성 메서드
     public String createJwt(String username, String role, Long expiredMs) {
 
-        return Jwts.builder().
-                claim("username", username)
+        return Jwts.builder()
+                .claim("username", username)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiredMs)) // 만료 시간 결정
+                .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
                 .compact();
     }
